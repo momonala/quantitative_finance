@@ -12,20 +12,20 @@ The idea here is to build a model, or at least a mode of thinking, that allows u
 
 The basic idea here is to assume that a stock is a random distribution and use z-scores to set trade execution thresholds. The z-score is a useful statistic which indicates how many standard deviations an element is from the mean.  It can be calculated from the following formula:
 
-$$ Z = \frac{X - μ}{σ} $$
+Z = (X - μ)/σ
 
-Where z is the z-score, $X$ is the value of the element, $μ$ is the population mean, and $σ$ is the standard deviation. The z-score allows us to calulate the probability of the value X occuring in an normal distribution. If we have a Z-score of 2, that means we constrain the normal distribution by 2 standard deviations, and 95.4% of the data falls within those constraints. There is only a 4.6% chance that data will fall outside of those bounds.
+Where z is the z-score, X is the value of the element, μ is the population mean, and σ is the standard deviation. The z-score allows us to calulate the probability of the value X occuring in an normal distribution. If we have a Z-score of 2, that means we constrain the normal distribution by 2 standard deviations, and 95.4% of the data falls within those constraints. There is only a 4.6% chance that data will fall outside of those bounds.
 
 
-<img src='https://i0.wp.com/i887.photobucket.com/albums/ac73/archaeopteryx1/bell-curve.jpg' height="542" width="542">
+<img src='https://i0.wp.com/i887.photobucket.com/albums/ac73/archaeopteryx1/bell-curve.jpg' height="400" >
 
 By setting upper and lower z-score bounds over the rolling mean of a stock, I can build signals that a stock is over or undervalued. Combining this with intuition about the status of the company would give a solid quantitative and informed trading decision. Below you can see an example with Ford stock. A buy signal would be when the true price (dark blue) crosses under the red (lower z-bound), signalling undervaluation. The stock will revert to the mean, or get overvalued when it passes the upper blue bound, and be a sell signal. 
 
-<img src='/files/z_examle.png' height="542" width="542">
+<img src='https://raw.githubusercontent.com/momonala/quantitative_finance/master/files/z_example.png' height="542" width="400">
 
 ## Current Progress 
 
-I have performed an [exploratory analysis of stock data and tested the z-score idea.]() The results look promising enought to continue developing the idea. There are a few factors to consider, outlined below. 
+I have performed an [exploratory analysis of stock data and tested the z-score idea.]() The results look promising enough to continue developing the idea. There are a few factors to consider, outlined below. 
 
 ## Future Direction
 
