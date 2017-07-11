@@ -27,18 +27,22 @@ By setting upper and lower z-score bounds over the rolling mean of a stock, I ca
 
 I have performed an [exploratory analysis of stock data and tested the z-score idea.]() The results look promising enough to continue developing the idea. There are a few factors to consider, outlined below. 
 
+I have also built a random stock price generator to create a large, realistic dataset for validation and testing. The advantage here is that we have labels for the volatility and mean drift of the stock, which will allow supervised learning later on. This also creates an unlimited amount of testing data. 
+
+In terms of true data collection, I am currently playing around with Quandl, Quantopian, and Yahoo Finance (via BeautifulSoup) to get data. Quantopian has the most comprehensive dataset, but it is trapped in the platform. 
+
+#### ensure you **pip install requirements.txt** before running the code! 
+
 ## Future Direction
 
 I plan to continue work in a few different directions: 
 
 1) A simple visualization web tool built in Flask with a Pandas data structure backend. 
 
-2) K-means clustering on stocks and hyperparameters to identify broad trends and inform a diverse, uncorrelated portfolio. 
+2) K-means clustering on stocks and hyperparameters to identify broad trends and inform a diverse, uncorrelated portfolio. We can then fit these clusters to the labels for volatility and drift from the artificial stocks which could allow better knowledge about the general behavior of the stock. 
 
-3) Build a random stock price generator to create a large, realistic dataset for validation and testing. I would generate time series data with profiles characterized from the clustering analysis. This would be huge since my current bottle neck is having enough data to test on. 
+3) Work with Quantopian's open-sourced tools [Zipline](https://github.com/quantopian/zipline) and [Alphalens](https://github.com/quantopian/alphalens) to validate and quantitatively analyze model perfomance. 
 
-4) Work with Quantopian's open-sourced tools [Zipline](https://github.com/quantopian/zipline) and [Alphalens](https://github.com/quantopian/alphalens) to validate and quantitatively analyze model perfomance. 
-
-### Referenecs and Further Reading 
+### References and Further Reading 
 
 [Quantopian Lectures](https://www.quantopian.com/lectures)
