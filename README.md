@@ -6,8 +6,6 @@ This experiment is based on an idea which the two aforementioned Israeli psychol
 
 Our minds are particularly susceptible to warping current decisions based on the availability of recent events. For example, if a company puts out a good earnings report for their previous quarter, everyone rushes to invest. But most of those same people will tell you that the past behavior of a stock tells you nothing about its future.  With an investment strategy, we want to make money regardless of changes to tax codes or whether there is a coup in Turkey. If a stock can be treated more like a random variable, we can root out the probabilistic nature of its behavior, and resist the fallacies in our thinking. 
 
-The idea here is to build a model, or at least a mode of thinking, that allows us to maximize the usefulness of our thinking, and minimize its errs. We want retain our native intuition in understanding underlying market trends, assessing the executives running their companies, and calculating how basic economics or sociology affects a broad market. We also want to reduce the foibles of probablistic thinking by building models and visualizations that will abstract stochasticity into simple statistical truths.
-
 ## Z-Score Trading Thresholds 
 
 The basic idea here is to assume that a stock is a random distribution and use z-scores to set trade execution thresholds. The z-score is a useful statistic which indicates how many standard deviations an element is from the mean.  It can be calculated from the following formula:
@@ -15,7 +13,6 @@ The basic idea here is to assume that a stock is a random distribution and use z
 Z = (X - μ)/σ
 
 Where z is the z-score, X is the value of the element, μ is the population mean, and σ is the standard deviation. The z-score allows us to calulate the probability of the value X occuring in an normal distribution. If we have a Z-score of 2, that means we constrain the normal distribution by 2 standard deviations, and 95.4% of the data falls within those constraints. There is only a 4.6% chance that data will fall outside of those bounds.
-
 
 <img src='https://i0.wp.com/i887.photobucket.com/albums/ac73/archaeopteryx1/bell-curve.jpg' height="300" >
 
@@ -25,11 +22,9 @@ By setting upper and lower z-score bounds over the rolling mean of a stock, I ca
 
 ## Current Progress 
 
-I have performed an [exploratory analysis of stock data and tested the z-score idea.]() The results look promising enough to continue developing the idea. There are a few factors to consider, outlined below. 
+I have performed an [exploratory analysis of stock data and tested the z-score idea.](bollingerbar_analysis.ipynb) The results look promising enough to continue developing the idea. There are a few factors to consider, outlined below. Additionally I did some k-means clustering analysis on the thresholds, and built a script to scrape quandl. 
 
-I have also built a random stock price generator to create a large, realistic dataset for validation and testing. The advantage here is that we have labels for the volatility and mean drift of the stock, which will allow supervised learning later on. This also creates an unlimited amount of testing data. 
-
-In terms of true data collection, I am currently playing around with Quandl, Quantopian, and Yahoo Finance (via BeautifulSoup) to get data. Quantopian has the most comprehensive dataset, but it is trapped in the platform. 
+I also played around with building a random stock price generator to create a large, realistic dataset for validation and testing. The advantage here is that we have labels for the volatility and mean drift of the stock, which will allow supervised learning later on. This also creates an unlimited amount of testing data. 
 
 #### ensure you **pip install requirements.txt** before running the code! 
 
@@ -39,9 +34,7 @@ I plan to continue work in a few different directions:
 
 1) A simple visualization web tool built in Flask with a Pandas data structure backend. 
 
-2) K-means clustering on stocks and hyperparameters to identify broad trends and inform a diverse, uncorrelated portfolio. We can then fit these clusters to the labels for volatility and drift from the artificial stocks which could allow better knowledge about the general behavior of the stock. 
-
-3) Work with Quantopian's open-sourced tools [Zipline](https://github.com/quantopian/zipline) and [Alphalens](https://github.com/quantopian/alphalens) to validate and quantitatively analyze model perfomance. 
+2) Work with Quantopian's open-sourced tools [Zipline](https://github.com/quantopian/zipline) and [Alphalens](https://github.com/quantopian/alphalens) to validate and quantitatively analyze model perfomance. 
 
 ### References and Further Reading 
 
