@@ -32,7 +32,7 @@ I have performed an [exploratory analysis of stock data and tested the z-score i
 
 Dash is pretty interative and flexible, and allows additional components to be added in quite easily with some Python and React code. Hoping to learn more and continue building this out. 
 
-<img src='files/app.png' height="700">
+<img src='files/app_page.png' height="700">
 
 #### Usage:  
 - `pip install requirements.txt`
