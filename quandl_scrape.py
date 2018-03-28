@@ -98,7 +98,7 @@ if crawl:
     
     #stocks of interest not in sp500
     #names = ['fb', 'inod']
-    names = ['tsla', 'lulu', 'onvo', 'yelp', 'twtr', 'z', 'aapl', 'amrs']
+    names = ['tsla', 'lulu', 'onvo', 'yelp', 'twtr', 'z', 'aapl', 'amrs', 'inod']
     
     names = names+sp500+sp400
     names = list(set(names)) #delete duplicates
