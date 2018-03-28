@@ -32,25 +32,25 @@ I have performed an [exploratory analysis of stock data and tested the z-score i
 
 Dash is pretty interative and flexible, and allows additional components to be added in quite easily with some Python and React code. Hoping to learn more and continue building this out. 
 
-<img src='files/app.png' height="800">
+<img src='files/app.png' height="700">
 
 #### Usage:  
-`pip install requirements.txt`
-`cd app`
-`python app.py` -> navigate to `http://127.0.0.1:8050/`
-type in a valid stock ticker 
+- `pip install requirements.txt`
+- `cd app`
+- `python app.py` -> navigate to `http://127.0.0.1:8050/`
+- type in a valid stock ticker 
 
 #### Dependencies: 
 **app**
-pandas 
-[pandas datareader](https://pandas-datareader.readthedocs.io/en/latest/)
-[dash](https://dash.plot.ly/)
+- pandas 
+- [pandas datareader](https://pandas-datareader.readthedocs.io/en/latest/)
+- [dash](https://dash.plot.ly/)
 
 **analysis**
-pandas 
-numpy 
-quandl 
-sklearn 
+- pandas 
+- numpy 
+- quandl 
+- sklearn 
 
 ## Other Progress 
 
