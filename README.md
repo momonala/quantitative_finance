@@ -15,12 +15,13 @@ The z-score is a useful statistic which indicates how many standard deviations a
 Z = (X - μ)/σ
 
 Where z is the z-score, X is the value of the element, μ is the population mean, and σ is the standard deviation. The z-score allows us to calulate the probability of the value X occuring in an normal distribution. If we have a Z-score of 2, that means we constrain the normal distribution by 2 standard deviations, and 95.4% of the data falls within those constraints. There is only a 4.6% chance that data will fall outside of those bounds.
-
-<img src='https://i0.wp.com/i887.photobucket.com/albums/ac73/archaeopteryx1/bell-curve.jpg' height="300" >
+<center>
+    <img src='https://i0.wp.com/i887.photobucket.com/albums/ac73/archaeopteryx1/bell-curve.jpg' width="300" >
+</center>
 
 By setting upper and lower z-score bounds over the rolling mean of a stock, we can create trading singals that are triggered when the true stocks crosses over. Below you can see an example with Ford stock. A buy signal would be when the true price (dark blue) crosses under the red (lower z-bound), signalling undervaluation. The stock will revert to the mean, or get overvalued when it passes the upper blue bound, and be a sell signal. 
 
-<img src='files/z_example.png' height="300">
+<img src='files/z_example.png' width="600">
 
 **NOTE** I am in no way recommend you to buy or sell any stocks. This is more of a thought exercise and may provide an interesting way to view markets. If you really want to make use of statistics, buy an index... 
 
@@ -32,7 +33,7 @@ I have performed an [exploratory analysis of stock data and tested the z-score i
 
 Dash is pretty interative and flexible, and allows additional components to be added in quite easily with some Python and React code. Hoping to learn more and continue building this out. 
 
-<img src='files/app_page.png' height="700">
+<img src='files/app_page.png' width="700">
 
 #### Usage:  
 - `pip install requirements.txt`
