@@ -3,3 +3,4 @@ __pycache__/
 my_key.py
 old/
 .ipynb_checkpoints/
+data_analysis/crypto/bitcoin-price-api/
