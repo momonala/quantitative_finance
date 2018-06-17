@@ -45,7 +45,7 @@ app.layout =html.Div(children=[
                                 id='thresh_slider',
                                 min=-50.,
                                 max=50.,
-                                value=[-50., 50.], 
+                                value=[-25., 25.], 
                                 # marks = np.linspace(-50, 50, 101)
                             ),
                         ],
