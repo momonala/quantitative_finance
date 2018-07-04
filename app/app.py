@@ -1,22 +1,34 @@
-import pandas_datareader.data as web
 import datetime
 import pandas as pd
+import numpy as np
+import pandas_datareader.data as web
+
+import flask
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+
 from snp500 import getsp500
 
-app = dash.Dash()
-app.css.append_css({"external_url":
-                    "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
-sp500 = getsp500() # list of tickers
+flask_app = flask.Flask(__name__)
+dash_app = dash.Dash(__name__, server=flask_app)
+dash_app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
+
+# a bit of setup
+sp500 = getsp500()  # list of tickers
 extras = ['tsla', 'yelp', 'lulu']
 all_stocks = sp500 + extras
 metadata = pd.read_csv('data/company_metadata.csv')
 all_params = pd.read_csv('data/tuned_params.csv')
+points_to_mark = list(np.linspace(-5, 5, 21))   
+marks = {int(i) if i % 1 == 0 else i: '{}'.format(i) for i in points_to_mark}
 
+
+@server.route('/hello')
+def hello():
+    return 'Hello, World!'
 
 def get_stock_data(ticker):
     ''' get data from web directly'''
@@ -35,9 +47,8 @@ def compute_band(s, factor, window):
     std_ = s.rolling(window).std()
     return mean_ + std_ * factor
 
-
 # build the interactive inputs and skeleton of the app
-app.layout = html.Div(children=[
+dash_app.layout = html.Div(children=[
                 html.Div(children=''' Symbol to graph: '''),
                 dcc.Input(id='stock_name', value='', type='text'),
                 html.Div(
@@ -46,9 +57,11 @@ app.layout = html.Div(children=[
                                         id='thresh-range-label'),
                              dcc.RangeSlider(
                                  id='thresh_slider',
-                                 min=-50.,
-                                 max=50.,
-                                 value=[-25., 25.],
+                                 min=-5.,
+                                 max=5.,
+                                 step=None,
+                                 marks=marks,
+                                 value=[-2.5, 2.5],
                              ),
                          ],
                          style={'margin-top': '20'}
@@ -60,7 +73,7 @@ app.layout = html.Div(children=[
             ])
 
 
-@app.callback(
+@dash_app.callback(
     output=Output('param_data', 'children'),
     inputs=[Input('stock_name', 'value')]
     )
@@ -85,7 +98,7 @@ def update_table(ticker):
     )
 
 
-@app.callback(
+@dash_app.callback(
     output=Output('output-graph', 'children'),
     inputs=[Input('thresh_slider', 'value'),
             Input('stock_name', 'value')]
@@ -97,7 +110,7 @@ def update_graph(band_range, ticker):
         ticker (str): stock to plot
     """
     ticker = ticker.lower()
-    band_range = [float(x) / 10 for x in band_range]
+    band_range = [float(x) for x in band_range]
 
     # some exception handling for non-valid tickers
     if ticker == '':
@@ -128,4 +141,4 @@ def update_graph(band_range, ticker):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    dash_app.run_server(debug=True)
