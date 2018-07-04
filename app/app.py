@@ -10,6 +10,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 
 from snp500 import getsp500
+import trades
 
 
 flask_app = flask.Flask(__name__)
@@ -17,35 +18,14 @@ dash_app = dash.Dash(__name__, server=flask_app)
 dash_app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 # a bit of setup
-sp500 = getsp500()  # list of tickers
-extras = ['tsla', 'yelp', 'lulu']
-all_stocks = sp500 + extras
+sp500 = getsp500()
+stocks_of_interest = ['fb', 'aapl', 'amzn', 'goog', 'tsla', 'nvda', 'msft', 'ford', 'lulu', 'yelp']
+all_stocks = sp500 + stocks_of_interest
 metadata = pd.read_csv('data/company_metadata.csv')
 all_params = pd.read_csv('data/tuned_params.csv')
+
 points_to_mark = list(np.linspace(-5, 5, 21))   
 marks = {int(i) if i % 1 == 0 else i: '{}'.format(i) for i in points_to_mark}
-
-
-@server.route('/hello')
-def hello():
-    return 'Hello, World!'
-
-def get_stock_data(ticker):
-    ''' get data from web directly'''
-    start = datetime.datetime(2012, 1, 1)
-    end = datetime.datetime.now()
-    df = web.DataReader(ticker, 'morningstar', start, end)
-    df.reset_index(inplace=True)
-    df.set_index("Date", inplace=True)
-    df = df.drop("Symbol", axis=1)
-    return df.Close
-
-
-def compute_band(s, factor, window):
-    '''compute a bollinger band'''
-    mean_ = s.rolling(window).mean()
-    std_ = s.rolling(window).std()
-    return mean_ + std_ * factor
 
 # build the interactive inputs and skeleton of the app
 dash_app.layout = html.Div(children=[
@@ -71,6 +51,11 @@ dash_app.layout = html.Div(children=[
                 html.Div(id='param_data', style={'margin-top': '10,',
                                                  'margin-left': '200'})
             ])
+
+
+@flask_app.route('/hello')
+def hello():
+    return 'Hello, World!'
 
 
 @dash_app.callback(
@@ -120,10 +105,10 @@ def update_graph(band_range, ticker):
 
     name = metadata[metadata.Ticker == ticker.upper()].Name.values[0]
 
-    df = get_stock_data(ticker)
+    df = trades.get_stock_data(ticker)
     params = all_params[all_params.SOI == ticker]
-    low = compute_band(df, band_range[0], int(params.window_size))
-    high = compute_band(df, band_range[1], int(params.window_size))
+    low = trades.compute_band(df, band_range[0], int(params.window_size))
+    high = trades.compute_band(df, band_range[1], int(params.window_size))
 
     return dcc.Graph(
         id='ex-graph',
