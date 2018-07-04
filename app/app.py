@@ -31,10 +31,10 @@ def compute_band(s, factor, window):
     '''compute a bollinger band'''
     mean_ = s.rolling(window).mean()
     std_ = s.rolling(window).std()
-    return mean_ + std_*factor
+    return mean_ + std_ * factor
 
 
-# build the interactive inputs
+# build the interactive inputs and skeleton of the app
 app.layout = html.Div(children=[
                 html.Div(children=''' Symbol to graph: '''),
                 dcc.Input(id='stock_name', value='', type='text'),
@@ -58,16 +58,19 @@ app.layout = html.Div(children=[
             ])
 
 
-# build the table with parmas / metadata
 @app.callback(
     output=Output('param_data', 'children'),
     inputs=[Input('stock_name', 'value')]
     )
-def update_value(input_data):
-    if input_data == '' or input_data not in all_stocks.columns:
+def update_table(ticker):
+    """ Build the Table of data about the stock buy
+    Args:
+        ticker (str): stock name to analyze
+    """
+    if ticker == '' or ticker not in all_stocks.columns:
         return ''
 
-    params = all_params[all_params.SOI == input_data]
+    params = all_params[all_params.SOI == ticker]
 
     return html.Table(
         # Header
@@ -80,29 +83,33 @@ def update_value(input_data):
     )
 
 
-# build the graph
 @app.callback(
     output=Output('output-graph', 'children'),
     inputs=[Input('thresh_slider', 'value'),
             Input('stock_name', 'value')]
     )
-def update_value(band_range, input_data):
-    input_data = input_data.lower()
-    band_range = [float(x)/10 for x in band_range]
+def update_graph(band_range, ticker):
+    """ Build the graph. Compute bollinger bars and plot.
+    Args:
+        band_range (tuple): bounds for bollinger bars
+        ticker (str): stock to plot
+    """
+    ticker = ticker.lower()
+    band_range = [float(x) / 10 for x in band_range]
 
     # some exception handling for non-valid tickers
-    if input_data == '':
+    if ticker == '':
         return None
-    if input_data not in all_stocks.columns:
-        return 'no stock data for "{}" '.format(input_data)
+    if ticker not in all_stocks.columns:
+        return 'no stock data for "{}" '.format(ticker)
 
-    name = metadata[metadata.Ticker == input_data.upper()].Name.values[0]
+    name = metadata[metadata.Ticker == ticker.upper()].Name.values[0]
 
     # use stored data
-    # df = all_stocks.loc[:, input_data].dropna()
+    # df = all_stocks.loc[:, ticker].dropna()
 
-    df = get_stock_data(input_data)
-    params = all_params[all_params.SOI == input_data]
+    df = get_stock_data(ticker)
+    params = all_params[all_params.SOI == ticker]
     low = compute_band(df, band_range[0], int(params.window_size))
     high = compute_band(df, band_range[1], int(params.window_size))
 
@@ -110,12 +117,12 @@ def update_value(band_range, input_data):
         id='ex-graph',
         figure={
             'data': [
-                {'x': df.index, 'y': df, 'type': 'line', 'name': input_data},
+                {'x': df.index, 'y': df, 'type': 'line', 'name': ticker},
                 {'x': df.index, 'y': high, 'type': 'line', 'name': 'upper Z {}'.format(band_range[1])},
                 {'x': df.index, 'y': low, 'type': 'line', 'name': 'lower Z {}'.format(band_range[0])},
             ],
             'layout': {
-                'title': '{}  {}'.format(input_data.upper(), name)
+                'title': '{}  {}'.format(ticker.upper(), name)
             }
         }
     )
