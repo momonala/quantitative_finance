@@ -5,13 +5,15 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+from snp500 import getsp500
 
 app = dash.Dash()
 app.css.append_css({"external_url":
                     "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
-all_stocks = pd.read_csv('data/quandl.csv')
-all_stocks.index = pd.DatetimeIndex(all_stocks.date)
+sp500 = getsp500() # list of tickers
+extras = ['tsla', 'yelp', 'lulu']
+all_stocks = sp500 + extras
 metadata = pd.read_csv('data/company_metadata.csv')
 all_params = pd.read_csv('data/tuned_params.csv')
 
@@ -67,7 +69,7 @@ def update_table(ticker):
     Args:
         ticker (str): stock name to analyze
     """
-    if ticker == '' or ticker not in all_stocks.columns:
+    if ticker == '' or ticker not in all_stocks:
         return ''
 
     params = all_params[all_params.SOI == ticker]
@@ -100,13 +102,10 @@ def update_graph(band_range, ticker):
     # some exception handling for non-valid tickers
     if ticker == '':
         return None
-    if ticker not in all_stocks.columns:
+    if ticker not in all_stocks:
         return 'no stock data for "{}" '.format(ticker)
 
     name = metadata[metadata.Ticker == ticker.upper()].Name.values[0]
-
-    # use stored data
-    # df = all_stocks.loc[:, ticker].dropna()
 
     df = get_stock_data(ticker)
     params = all_params[all_params.SOI == ticker]
