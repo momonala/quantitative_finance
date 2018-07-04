@@ -21,19 +21,19 @@ Where z is the z-score, X is the value of the element, μ is the population mean
 
 By setting upper and lower z-score bounds over the rolling mean of a stock, we can create trading singals that are triggered when the true stocks crosses over. Below you can see an example with Ford stock. A buy signal would be when the true price (dark blue) crosses under the red (lower z-bound), signalling undervaluation. The stock will revert to the mean, or get overvalued when it passes the upper blue bound, and be a sell signal. 
 
-<img src='files/z_example.png' width="900">
+<img src='img/z_example.png' width="900">
 
 **NOTE** I am in no way recommend you to buy or sell any stocks. This is more of a thought exercise and may provide an interesting way to view markets. If you really want to make use of statistics, buy an index... 
 
 ## App 
 
-I have performed an [exploratory analysis of stock data and tested the z-score idea.](z-score_analysis.ipynb) The results look promising enough to continue developing the idea. 
+I have performed an [exploratory analysis of stock data and tested the z-score idea.](data_analysis/z-score_analysis.ipynb) The results look promising enough to continue developing the idea. 
 
 `/app` contains a [dash app](https://dash.plot.ly/) for visualization and exploration of the Z-score technique. It pulls new stock data with [pandas datareader](https://pandas-datareader.readthedocs.io/en/latest/), performs the relevant operations to the data, and outputs a nice chart and table of values. These values are precomputed in the z-score analysis, and pulled into the app via .csv. 
 
 Dash is pretty interative and flexible, and allows additional components to be added in quite easily with some Python and React code. Hoping to learn more and continue building this out. 
 
-<img src='files/app_page.png' width="1200">
+<img src='img/app_page.png' width="1200">
 
 #### Usage:  
 - `pip install requirements.txt`
