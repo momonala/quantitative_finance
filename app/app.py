@@ -17,51 +17,45 @@ flask_app = flask.Flask(__name__)
 dash_app = dash.Dash(__name__, server=flask_app)
 dash_app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
-# a bit of setup
+# setup dataframes
 sp500 = getsp500()
-stocks_of_interest = ['fb', 'aapl', 'amzn', 'goog', 'tsla', 'nvda', 'msft', 'ford', 'lulu', 'yelp']
+stocks_of_interest = ['fb', 'aapl', 'amzn', 'goog', 'tsla', 'nvda',
+                      'msft', 'amrs', 'lulu', 'swks', 'voo', 'nflx', 'amd']
 all_stocks = sp500 + stocks_of_interest
 metadata = pd.read_csv('data/company_metadata.csv')
 all_params = pd.read_csv('data/tuned_params.csv')
 
+# markings for threshold sliders
 points_to_mark = list(np.linspace(-5, 5, 21))   
 marks = {int(i) if i % 1 == 0 else i: '{}'.format(i) for i in points_to_mark}
 
 # build the interactive inputs and skeleton of the app
 dash_app.layout = html.Div(children=[
-                html.Div(children=''' Symbol to graph: '''),
-                dcc.Input(id='stock_name', value='', type='text'),
-                html.Div(
-                         [
-                             html.Label('Threshold Range',
-                                        id='thresh-range-label'),
-                             dcc.RangeSlider(
-                                 id='thresh_slider',
-                                 min=-5.,
-                                 max=5.,
-                                 step=None,
-                                 marks=marks,
-                                 value=[-2.5, 2.5],
-                             ),
-                         ],
-                         style={'margin-top': '20'}
-                     ),
-
-                html.Div(id='output-graph'),
-                html.Div(id='param_data', style={'margin-top': '10,',
-                                                 'margin-left': '200'})
-            ])
-
-
-@flask_app.route('/hello')
-def hello():
-    return 'Hello, World!'
+    html.Div(children=''' Symbol to graph: '''),
+    dcc.Input(id='stock_name', value='', type='text'),
+    html.Div(
+        [
+            html.Label('Threshold Range',
+                       id='thresh-range-label'),
+            dcc.RangeSlider(
+                id='thresh_slider',
+                min=-5., max=5.,
+                step=None,
+                marks=marks,
+                value=[-2.5, 2.5],
+            ),
+        ],
+        style={'margin-top': '20'}
+    ),
+    html.Div(id='stock_graph'),
+    html.Div(id='param_data', style={'margin-top': '10,', 'margin-left': '200'})
+])
 
 
 @dash_app.callback(
     output=Output('param_data', 'children'),
     inputs=[Input('stock_name', 'value')]
-    )
+)
 def update_table(ticker):
     """ Build the Table of data about the stock buy
     Args:
@@ -77,14 +71,12 @@ def update_table(ticker):
         [html.Tr([html.Th(col) for col in params.columns[2:]])] +
 
         # Body
-        [html.Tr([
-            html.Td(params.iloc[0][col]) for col in params.columns[2:]
-        ])]
+        [html.Tr([html.Td(params.iloc[0][col]) for col in params.columns[2:]])]
     )
 
 
 @dash_app.callback(
-    output=Output('output-graph', 'children'),
+    output=Output('stock_graph', 'children'),
     inputs=[Input('thresh_slider', 'value'),
             Input('stock_name', 'value')]
     )
