@@ -1,0 +1,12 @@
+matplotlib==2.0.2
+dash_core_components==0.21.0
+dash_html_components==0.9.0
+numpy==1.14.2
+plotly==2.5.0
+Quandl==3.3.0
+pandas==0.22.0
+pandas_datareader==0.6.0
+requests==2.18.4
+dash==0.21.0
+Flask==0.12.2
+beautifulsoup4==4.6.0
